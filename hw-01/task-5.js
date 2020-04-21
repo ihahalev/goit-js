@@ -14,32 +14,36 @@ const australiaPostCost = 170;
 const indiaPostCost = 80;
 const jamaicaPostCost = 120;
 
-switch (userCountry.toLowerCase()) {
-  case CHINA.toLowerCase():
-    alert(`Доставка в ${CHINA} будет стоить ${chinaPostCost} кредитов`);
+if (userCountry) {
+  switch (userCountry.toLowerCase()) {
+    case CHINA.toLowerCase():
+      alert(`Доставка в ${CHINA} будет стоить ${chinaPostCost} кредитов`);
 
-    break;
+      break;
 
-  case CHILE.toLowerCase():
-    alert(`Доставка в ${CHILE} будет стоить ${chilePostCost} кредитов`);
+    case CHILE.toLowerCase():
+      alert(`Доставка в ${CHILE} будет стоить ${chilePostCost} кредитов`);
 
-    break;
+      break;
 
-  case AUSTRALIA.toLowerCase():
-    alert(`Доставка в ${AUSTRALIA} будет стоить ${australiaPostCost} кредитов`);
+    case AUSTRALIA.toLowerCase():
+      alert(
+        `Доставка в ${AUSTRALIA} будет стоить ${australiaPostCost} кредитов`,
+      );
 
-    break;
+      break;
 
-  case INDIA.toLowerCase():
-    alert(`Доставка в ${INDIA} будет стоить ${indiaPostCost} кредитов`);
+    case INDIA.toLowerCase():
+      alert(`Доставка в ${INDIA} будет стоить ${indiaPostCost} кредитов`);
 
-    break;
+      break;
 
-  case JAMAICA.toLowerCase():
-    alert(`Доставка в ${JAMAICA} будет стоить ${jamaicaPostCost} кредитов`);
+    case JAMAICA.toLowerCase():
+      alert(`Доставка в ${JAMAICA} будет стоить ${jamaicaPostCost} кредитов`);
 
-    break;
+      break;
 
-  default:
-    alert('В вашей стране доставка не доступна');
+    default:
+      alert('В вашей стране доставка не доступна');
+  }
 }
