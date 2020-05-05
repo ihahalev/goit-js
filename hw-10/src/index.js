@@ -59,7 +59,7 @@ function changeTheme(e) {
   lightboxCart.classList.toggle(Theme.DARK);
   inputTheme.checked
     ? (settings.theme = Theme.DARK)
-    : (settings.thene = Theme.LIGHT);
+    : (settings.theme = Theme.LIGHT);
   save('settings', settings);
 }
 
