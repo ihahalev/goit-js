@@ -322,8 +322,9 @@ ul {
   position: absolute;
   top: 0;
   left: 0;
+  bottom: 0;
   width: 100vw;
-  height: 69.5vw;
+  height: 48vw;
   /* overflow: auto; */
   display: flex;
   /* align-items: center; */
@@ -336,7 +337,7 @@ ul {
 .lightbox__cart {
   width: 30%;
   height: 100%;
-  max-height: 100%;
+  max-height: auto;
   /* max-width: 30%; */
   overflow: auto;
 }

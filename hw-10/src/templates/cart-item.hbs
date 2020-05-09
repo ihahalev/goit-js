@@ -19,14 +19,14 @@
       </ul>
     </div>
     <div class="counter">
-      <button class="card__button button">
+      <button class="card__button button" data-action="remove">
         <i class="material-icons button__icon">
           shopping_cart
         </i>
         Удалить
       </button>
       <button class="card__button button crement" data-action="decrement">-1</button>
-      <span class="card__button value crement">0</span>
+      <span class="card__button value crement">{{count}}</span>
       <button class="card__button button crement" data-action="increment">+1</button>
     </div>
   </div>

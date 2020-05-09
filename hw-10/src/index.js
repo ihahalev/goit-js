@@ -26,6 +26,7 @@ const load = key => {
       return {
         theme: Theme.LIGHT,
         dishes: [],
+        count: [],
       };
     } else {
       const setts = JSON.parse(jsonSet);
@@ -42,6 +43,7 @@ const load = key => {
     console.error('Get error: ', err);
   }
 };
+
 const save = (key, value) => {
   try {
     localStorage.setItem(key, JSON.stringify(value));
@@ -78,16 +80,20 @@ const lightboxCart = document.querySelector('.lightbox__cart');
 const lightboxClose = document.querySelector(
   'button[data-action="close-lightbox"]',
 );
-const lightboxContent = document.querySelector('.lightbox__content');
 
 let settings = {
   theme: Theme.LIGHT,
   dishes: [],
+  count: [],
 };
 
 settings = load('settings');
 
-cartList = settings.dishes.map(id => menu.find(card => card.id === id));
+cartList = settings.dishes.map((id, idx) => {
+  const dish = menu.find(card => card.id === id);
+  dish.count = settings.count[idx];
+  return dish;
+});
 
 cart.querySelector('span').textContent = cartList.length;
 
@@ -101,20 +107,26 @@ function addToCart(e) {
   e.preventDefault();
 
   const item = e.target.closest('li');
-  const id = item.getAttribute('id');
-  const cartDish = menu.find(dish => dish.id === id);
-  if (!cartDish) {
+  const addBtn = item.querySelector('button');
+  if (e.target !== addBtn) {
     return;
   }
-  // if (cartList.includes(cartDish)) {
-  //   // cartList.find(dish => dish.id === id).count +=1;
-  //   return;
-  // }
-  cartList.push(cartDish);
+  const id = item.getAttribute('id');
+  const idx = settings.dishes.indexOf(id);
+  if (idx < 0) {
+    const cartDish = menu.find(dish => dish.id === id);
+    if (!cartDish) {
+      return;
+    }
+    settings.count.push(1);
+    cartList.push({ ...cartDish });
+    cartList[cartList.length - 1].count = 1;
+    settings.dishes.push(id);
+  } else {
+    settings.count[idx] += 1;
+    cartList[idx].count += 1;
+  }
   cart.querySelector('span').textContent = cartList.length;
-
-  settings.dishes.push(cartDish.id);
-
   save('settings', settings);
 }
 
@@ -125,30 +137,8 @@ function openCart(e) {
   const markup = cartList.map(card => cartItem(card)).join('');
   lightboxCart.innerHTML = markup;
   window.addEventListener('keydown', handleEscape);
-  lightboxCart.addEventListener('click', removeDish);
+  lightboxCart.addEventListener('click', buttons);
 }
-
-// let counterValue = 0;
-
-// const decrementBnt = document.querySelector('button[data-action="decrement"]');
-// const incrementBnt = document.querySelector('button[data-action="increment"]');
-// const valueOutput = document.getElementById('value');
-
-// decrementBnt.addEventListener('click', decrement);
-// incrementBnt.addEventListener('click', increment);
-
-// function decrement() {
-//   counterValue -= 1;
-//   valueOutput.textContent = counterValue;
-//   // document.location.reload(true);
-//   return;
-// }
-
-// function increment() {
-//   counterValue += 1;
-//   valueOutput.textContent = counterValue;
-//   return;
-// }
 
 function handleClose() {
   lightbox.classList.remove('is-open');
@@ -170,20 +160,59 @@ function handleEscape(event) {
   handleClose();
 }
 
-function removeDish(e) {
+function buttons(e) {
   e.preventDefault();
 
   const item = e.target.closest('li');
+  const remBtn = item.querySelector('button[data-action="remove"]');
+  const decBnt = item.querySelector('button[data-action="decrement"]');
+  const incBnt = item.querySelector('button[data-action="increment"]');
+  const value = item.querySelector('.value');
   const id = item.getAttribute('id');
   const cartDish = menu.find(dish => dish.id === id);
   if (!cartDish) {
     return;
   }
-  cartList.splice(cartList.indexOf(cartDish.id), 1);
-  settings.dishes.splice(settings.dishes.indexOf(cartDish.id), 1);
+  const idx = settings.dishes.indexOf(id);
+  switch (e.target) {
+    case remBtn:
+      removeDish(idx, item);
+      return;
+    case decBnt:
+      decrement(idx, value);
+      return;
+    case incBnt:
+      increment(idx, value);
+      return;
+    default:
+      return;
+  }
+}
+
+function removeDish(idx, dish) {
+  cartList.splice(idx, 1);
+  settings.count.splice(idx, 1);
+  settings.dishes.splice(idx, 1);
 
   save('settings', settings);
-  item.remove();
-  console.log(cartList.length);
+  dish.remove();
   cart.querySelector('span').textContent = cartList.length;
+  if (!cartList.length) {
+    handleClose();
+  }
+}
+
+function decrement(idx, value) {
+  if (cartList[idx].count <= 1) {
+    return;
+  }
+  cartList[idx].count -= 1;
+  value.textContent = cartList[idx].count;
+  return;
+}
+
+function increment(idx, value) {
+  cartList[idx].count += 1;
+  value.textContent = cartList[idx].count;
+  return;
 }
