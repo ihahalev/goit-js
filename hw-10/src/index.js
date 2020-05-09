@@ -19,7 +19,7 @@ const inputTheme = document.querySelector('.js-switch-input');
 const load = key => {
   try {
     const jsonSet = localStorage.getItem(key);
-    console.log(jsonSet);
+
     if (!jsonSet || jsonSet === undefined) {
       page.classList.add(Theme.LIGHT);
       lightboxCart.classList.add(Theme.LIGHT);
@@ -78,6 +78,7 @@ const lightboxCart = document.querySelector('.lightbox__cart');
 const lightboxClose = document.querySelector(
   'button[data-action="close-lightbox"]',
 );
+const lightboxContent = document.querySelector('.lightbox__content');
 
 let settings = {
   theme: Theme.LIGHT,
@@ -85,9 +86,9 @@ let settings = {
 };
 
 settings = load('settings');
-console.log(settings);
+
 cartList = settings.dishes.map(id => menu.find(card => card.id === id));
-console.log(cartList);
+
 cart.querySelector('span').textContent = cartList.length;
 
 menuList.addEventListener('click', addToCart);
@@ -124,11 +125,35 @@ function openCart(e) {
   const markup = cartList.map(card => cartItem(card)).join('');
   lightboxCart.innerHTML = markup;
   window.addEventListener('keydown', handleEscape);
+  lightboxCart.addEventListener('click', removeDish);
 }
+
+// let counterValue = 0;
+
+// const decrementBnt = document.querySelector('button[data-action="decrement"]');
+// const incrementBnt = document.querySelector('button[data-action="increment"]');
+// const valueOutput = document.getElementById('value');
+
+// decrementBnt.addEventListener('click', decrement);
+// incrementBnt.addEventListener('click', increment);
+
+// function decrement() {
+//   counterValue -= 1;
+//   valueOutput.textContent = counterValue;
+//   // document.location.reload(true);
+//   return;
+// }
+
+// function increment() {
+//   counterValue += 1;
+//   valueOutput.textContent = counterValue;
+//   return;
+// }
 
 function handleClose() {
   lightbox.classList.remove('is-open');
   window.removeEventListener('keydown', handleEscape);
+  lightboxCart.removeEventListener('click', removeDish);
 }
 
 function handleLightbox(event) {
@@ -143,4 +168,22 @@ function handleEscape(event) {
     return;
   }
   handleClose();
+}
+
+function removeDish(e) {
+  e.preventDefault();
+
+  const item = e.target.closest('li');
+  const id = item.getAttribute('id');
+  const cartDish = menu.find(dish => dish.id === id);
+  if (!cartDish) {
+    return;
+  }
+  cartList.splice(cartList.indexOf(cartDish.id), 1);
+  settings.dishes.splice(settings.dishes.indexOf(cartDish.id), 1);
+
+  save('settings', settings);
+  item.remove();
+  console.log(cartList.length);
+  cart.querySelector('span').textContent = cartList.length;
 }

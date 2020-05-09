@@ -80,16 +80,16 @@ ul {
   pointer-events: none;
 }
 
-.switch__input:checked + .switch__label {
+.switch__input:checked+.switch__label {
   background-color: #d3d3d4;
 }
 
-.switch__input:checked + .switch__label + .switch__marker {
+.switch__input:checked+.switch__label+.switch__marker {
   left: calc(100% - 29px);
 }
 
-.switch__input:focus + .switch__label,
-.switch__input:active + .switch__label {
+.switch__input:focus+.switch__label,
+.switch__input:active+.switch__label {
   box-shadow: 0 0 0 3px #2a6df433;
 }
 
@@ -100,7 +100,7 @@ ul {
   user-select: none;
   background-color: #333;
   border-radius: inherit;
-  z-index: 1;
+  /* z-index: 1; */
   transition: background-color 150ms;
   cursor: pointer;
 }
@@ -111,7 +111,7 @@ ul {
   width: 26px;
   height: 26px;
   border-radius: 50%;
-  z-index: 2;
+  /* z-index: 2; */
   pointer-events: none;
   box-shadow: 0 1px 1px rgba(0, 0, 0, 0.25);
   left: 3px;
@@ -184,10 +184,19 @@ ul {
 
 .card__button {
   display: block;
-  margin-left: auto;
-  margin-right: auto;
+  margin-left: 2px;
+  margin-right: 2px;
   margin-top: 16px;
   width: calc(100% - 16px);
+}
+
+.counter {
+  display: flex;
+  padding: 0 6px;
+}
+
+.crement {
+  width: 40px;
 }
 
 .tag-list {
@@ -206,7 +215,8 @@ ul {
   color: #fff;
 }
 
-.button {
+.button,
+.value {
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -216,12 +226,15 @@ ul {
   outline: 0;
   padding: 8px 24px;
   border-radius: 4px;
-  cursor: pointer;
   box-shadow: 0px 2px 1px 1px rgba(0, 0, 0, 0.05);
   font: inherit;
   font-weight: 500;
   user-select: none;
   transition: background-color 200ms ease-in-out;
+}
+
+.button {
+  cursor: pointer;
 }
 
 .button:hover {
@@ -310,23 +323,33 @@ ul {
   top: 0;
   left: 0;
   width: 100vw;
-  height: auto;
+  height: 69.5vw;
+  /* overflow: auto; */
   display: flex;
-  align-items: center;
+  /* align-items: center; */
   justify-content: center;
-  transform: scale(0.9);
+  transform: scale(0.5);
+  /* translateY(0); */
   transition: transform 200ms ease-in-out;
 }
 
 .lightbox__cart {
-  width: auto;
-  height: auto;
-  /* max-height: 100vh; */
-  max-width: 30%;
+  width: 30%;
+  height: 100%;
+  max-height: 100%;
+  /* max-width: 30%; */
+  overflow: auto;
 }
 
 .lightbox.is-open .lightbox__content {
   transform: scale(1);
+  /* translateY(0); */
+}
+
+.cart__image {
+  height: 400px;
+  object-fit: cover;
+  max-width: 100%;
 }
 
 .lightbox__button {
