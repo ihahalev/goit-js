@@ -70,7 +70,7 @@ class CountdownTimer {
 }
 const saleTimeout = new CountdownTimer({
   selector: '#timer-1',
-  targetDate: new Date('May 10, 2020'),
+  targetDate: new Date('Sep 17, 2020'),
 });
 
 saleTimeout.startTimeout();
