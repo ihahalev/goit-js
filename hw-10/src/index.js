@@ -23,6 +23,7 @@ const load = key => {
     if (!jsonSet || jsonSet === undefined) {
       page.classList.add(Theme.LIGHT);
       lightboxCart.classList.add(Theme.LIGHT);
+      toolbar.classList.add(Theme.LIGHT);
       return {
         theme: Theme.LIGHT,
         dishes: [],
@@ -37,6 +38,7 @@ const load = key => {
       }
       page.classList.add(setts.theme);
       lightboxCart.classList.add(setts.theme);
+      toolbar.classList.add(setts.theme);
       return setts;
     }
   } catch (err) {
@@ -59,6 +61,8 @@ function changeTheme(e) {
   page.classList.toggle(Theme.DARK);
   lightboxCart.classList.toggle(Theme.LIGHT);
   lightboxCart.classList.toggle(Theme.DARK);
+  toolbar.classList.toggle(Theme.LIGHT);
+  toolbar.classList.toggle(Theme.DARK);
   inputTheme.checked
     ? (settings.theme = Theme.DARK)
     : (settings.theme = Theme.LIGHT);
@@ -80,6 +84,7 @@ const lightboxCart = document.querySelector('.lightbox__cart');
 const lightboxClose = document.querySelector(
   'button[data-action="close-lightbox"]',
 );
+const toolbar = document.querySelector('.toolbar');
 
 let settings = {
   theme: Theme.LIGHT,
@@ -95,7 +100,7 @@ cartList = settings.dishes.map((id, idx) => {
   return dish;
 });
 
-cart.querySelector('span').textContent = cartList.length;
+cartRecalc();
 
 menuList.addEventListener('click', addToCart);
 cart.addEventListener('click', openCart);
@@ -126,7 +131,7 @@ function addToCart(e) {
     settings.count[idx] += 1;
     cartList[idx].count += 1;
   }
-  cart.querySelector('span').textContent = cartList.length;
+  cartRecalc();
   save('settings', settings);
 }
 
@@ -196,7 +201,7 @@ function removeDish(idx, dish) {
 
   save('settings', settings);
   dish.remove();
-  cart.querySelector('span').textContent = cartList.length;
+  cartRecalc();
   if (!cartList.length) {
     handleClose();
   }
@@ -208,11 +213,20 @@ function decrement(idx, value) {
   }
   cartList[idx].count -= 1;
   value.textContent = cartList[idx].count;
+  cartRecalc();
   return;
 }
 
 function increment(idx, value) {
   cartList[idx].count += 1;
   value.textContent = cartList[idx].count;
+  cartRecalc();
   return;
+}
+
+function cartRecalc() {
+  cart.querySelector('span').textContent = cartList.reduce(
+    (acc, dish) => acc + dish.count,
+    0,
+  );
 }
