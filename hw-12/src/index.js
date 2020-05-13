@@ -31,29 +31,26 @@ function searchCountryHandler(event) {
   countryService.fetchCountries().then(data => {
     if (data.length > 10) {
       refs.countryList.innerHTML = '';
-      // refs.countryList.removeEventListener('click', openCountryDetails);
+      refs.countryList.removeEventListener('click', openCountryDetails);
       refs.countryDetails.innerHTML = '';
       return PNotify.error({
         text: 'Too many matches found. Please enter a more specific query!',
       });
     }
     if (data.length > 1) {
-      console.log(data);
       refs.countryDetails.innerHTML = '';
       insertListCountries(data);
-      // refs.countryList.addEventListener(
-      //   'click',
-      //   openCountryDetails
-      //   .then(count => {
-      //     const current = data.find(c => c.cioc === count);
-      //     console.log(current);
-      //   }),
-      // );
+      refs.countryList.addEventListener('click', openCountryDetails);
     } else {
       refs.countryList.innerHTML = '';
       insertCountryDetails(data[0]);
     }
-    // transferData(data);
+    function openCountryDetails(e) {
+      e.preventDefault();
+      refs.countryDetails.innerHTML = '';
+      const countryToOpen = e.target.dataset.code;
+      searchCountryDetails(countryToOpen, data);
+    }
   });
 }
 
@@ -73,13 +70,6 @@ function buildListCountriesMarkup(countries) {
   return markup;
 }
 
-// function openCountryDetails(e) {
-//   e.preventDefault();
-//   const countryToOpen = e.target.dataset.code;
-//   console.log(countryToOpen);
-//   return Promise.resolve(countryToOpen);
-// }
-
 function insertCountryDetails(country) {
   refs.countryDetails.insertAdjacentHTML(
     'beforeend',
@@ -91,7 +81,7 @@ function buildCountryDetailsMarkup(country) {
   return countryMarkup(country);
 }
 
-// function searchCountryDetails(cioc, countries) {
-//   const countryDetails = countries.find(country => country.cioc === cioc);
-//   insertCountryDetails(countryDetails);
-// }
+function searchCountryDetails(cioc, countries) {
+  const countryDetails = countries.find(country => country.cioc === cioc);
+  insertCountryDetails(countryDetails);
+}

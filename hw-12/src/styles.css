@@ -23,9 +23,9 @@ body {
   font-weight: 800;
 }
 
-/* .country__list li {
+.country__list li {
   cursor: pointer;
-} */
+}
 
 .details {
   width: 1000px;
@@ -37,5 +37,4 @@ img {
   padding-left: 100px;
   width: 400px;
   height: auto;
-
 }
