@@ -1,0 +1,88 @@
+html {
+  box-sizing: border-box;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: inherit;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto,
+    Oxygen-Sans, Ubuntu, Cantarell, 'Helvetica Neue', sans-serif,
+    'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol';
+
+  /*
+   * CSS image reference example.
+   */
+  background-image: url('./images/bg-pattern.png');
+}
+
+img {
+  display: block;
+  max-width: 100%;
+  height: auto;
+}
+
+ul {
+  list-style: none;
+}
+
+/* .gallery {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+} */
+
+.photo-card {
+  /* position: absolute; */
+  width: auto;
+  cursor: pointer;
+}
+
+.stats {
+  display: flex;
+  justify-content: center;
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: rgba(255, 255, 255, 0.5);
+  opacity: 0;
+  transition-property: opacity;
+  transition-duration: 0.35s;
+  transition-timing-function: linear;
+}
+
+.photo-card:hover .stats,
+.photo-card:focus .stats {
+  opacity: 1;
+}
+
+.stats-item {
+  text-align: center;
+  padding: 0 10px;
+}
+
+.material-icons {
+  display: block;
+}
+
+.more {
+  display: block;
+  margin: auto;
+  height: 50px;
+}
+
+.grid {
+  margin: 0 auto;
+  width: 100%;
+}
+
+.grid-sizer,
+.grid-item {
+  width: 33.3333333%;
+}
