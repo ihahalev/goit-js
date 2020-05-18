@@ -28,17 +28,18 @@ img {
 }
 
 ul {
+  padding-top: 50px;
   list-style: none;
 }
 
-/* .gallery {
-  display: flex;
-  justify-content: center;
-  flex-wrap: wrap;
-} */
+.search-form {
+  position: fixed;
+  top: 10px;
+  left: 20px;
+  z-index: 1;
+}
 
 .photo-card {
-  /* position: absolute; */
   width: auto;
   cursor: pointer;
 }
@@ -85,4 +86,23 @@ ul {
 .grid-sizer,
 .grid-item {
   width: 33.3333333%;
+}
+
+
+.lightbox__content {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100vh;
+  width: 100vw;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.lightbox__image {
+  width: auto;
+  height: auto;
+  max-height: 100vh;
+  max-width: 100vw;
 }

@@ -6,6 +6,11 @@ import '@pnotify/core/dist/BrightTheme.css';
 import apiService from './apiService';
 import domMarkup from './layout';
 
+import * as basicLightbox from 'basiclightbox';
+import 'basicLightbox/dist/basicLightbox.min.css';
+
+const lightbox = basicLightbox.create(`<div class="lightbox__content"></div>`);
+
 PNotify.defaults.width = '400px';
 
 const refs = {
@@ -16,6 +21,7 @@ const refs = {
 
 refs.searchForm.addEventListener('submit', searchFormHandler);
 refs.loadMoreBnt.addEventListener('click', loadMoreBntHandler);
+refs.gallery.addEventListener('click', openImage);
 
 import Masonry from 'masonry-layout';
 import imgLoaded from 'imagesloaded';
@@ -32,12 +38,12 @@ let imgLoadedInstance = imgLoaded(document.querySelector('.grid'));
 
 function searchFormHandler(e) {
   e.preventDefault();
-
+  window.scrollTo(0, 0);
   clearListItems();
   apiService.resetPage();
   apiService.searchQuery = e.currentTarget.elements.query.value;
   searchQueryHandler(true);
-  e.currentTarget.elements.query.value = '';
+  // e.currentTarget.elements.query.value = '';
 }
 
 async function loadMoreBntHandler(e) {
@@ -64,25 +70,15 @@ async function searchQueryHandler(firstLoad = false) {
       refs.loadMoreBnt.style.visibility = 'visible';
     }
     insertListItems(collection.hits);
-    // const masonryInstance = new Masonry('.grid', {
-    //   columnWidth: '.grid-sizer',
-    //   itemSelector: '.grid-item',
-    //   percentPosition: true,
-    //   transitionDuration: '0.2s',
-    //   stagger: 50,
-    //   initLayout: true,
-    // });
-    // const imgLoadedInstance = imgLoaded(document.querySelector('.grid'));
-    imgLoadedInstance = imgLoaded(document.querySelector('.grid'));
-    imgLoadedInstance.on('done', () => {
-      masonryInstance.layout();
-      if (!firstLoad) {
+    if (!firstLoad) {
+      // imgLoadedInstance = imgLoaded(document.querySelector('.grid'));
+      imgLoadedInstance.on('done', () => {
         window.scrollTo({
           top: window.visualViewport.pageTop + window.innerHeight,
           behavior: 'smooth',
         });
-      }
-    });
+      });
+    }
   } catch (err) {
     console.log(err);
     throw err;
@@ -101,4 +97,13 @@ function insertListItems(items) {
 
 function clearListItems() {
   refs.gallery.innerHTML = '<li class="grid-sizer"></li>';
+}
+
+function openImage(event) {
+  event.preventDefault();
+
+  const imageUrl = event.target.dataset.source;
+  const imageAlt = event.target.getAttribute('alt');
+  lightbox.element().innerHTML = `<img src="${imageUrl}" alt="${imageAlt}"/>`;
+  lightbox.show();
 }
