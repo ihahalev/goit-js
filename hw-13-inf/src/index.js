@@ -76,14 +76,14 @@ function searchFormHandler(e) {
   clearListItems();
   infScrollInstance.pageIndex = 1;
   infScrollInstance.searchQuery = e.currentTarget.elements.query.value;
-  searchQueryHandler(true);
+  searchQueryHandler();
 }
 
-async function searchQueryHandler(firstLoad = false) {
+async function searchQueryHandler() {
   infScrollInstance.on('load', response => {
     const collection = JSON.parse(response);
     try {
-      if (firstLoad) {
+      if (infScrollInstance.pageIndex === 2) {
         PNotify.info({
           text: `There are ${collection.total} results`,
         });
